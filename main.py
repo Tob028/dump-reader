@@ -61,7 +61,7 @@ def process_partition(data, start, length, type):
             # Log continues previous log
             # Compare timestamp with previous log
             previous_log = log_entries[-1]
-            if abs(log[0] - previous_log[0]) <= 1:
+            if abs(log[0] - previous_log[0]) <= MAX_DELAY_FF_FLAG:
                 log_entries[-1] = (previous_log[0], previous_log[1], previous_log[2] + log[2], previous_log[3])
         else:
             log_entries.append(log)

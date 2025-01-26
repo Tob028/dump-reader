@@ -56,7 +56,15 @@ def process_partition(data, start, length, type):
         entry = data[i:i + SIZE_LOG_ENTRY]
         if len(entry) < SIZE_LOG_ENTRY:
             break
-        log_entries.append(process_log(entry, type))
+        log = process_log(entry, type)
+        if log[1] == 255:
+            # Log continues previous log
+            # Compare timestamp with previous log
+            previous_log = log_entries[-1]
+            if abs(log[0] - previous_log[0]) <= 1:
+                log_entries[-1] = (previous_log[0], previous_log[1], previous_log[2] + log[2], previous_log[3])
+        else:
+            log_entries.append(log)
     return log_entries
 
 

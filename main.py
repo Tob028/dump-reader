@@ -16,6 +16,9 @@ def get_path_from_args():
     if len(sys.argv) < 2:
         print("Usage: python3 main.py <path>")
         sys.exit(1)
+    if not os.path.exists(sys.argv[1]):
+        print("Specified file does not exist")
+        sys.exit(1)
     path = sys.argv[1]
     output = None
     if len(sys.argv) == 4 and sys.argv[2] == "-o":

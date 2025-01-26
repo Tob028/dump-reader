@@ -1,0 +1,43 @@
+#define SIZE_STORAGE_TYPE 1U
+#define SIZE_SERIAL_NUMBER 4U
+#define SIZE_FLASH_TIMESTAMP 4U
+#define SIZE_PW_CYCLES 2U
+#define SIZE_USAGE_CYCLES 2U
+#define SIZE_SETTINGS 7U
+#define SIZE_PROPERTIES_PADDING 12U
+
+#define SIZE_LOG_NEXT 2U
+#define SIZE_LOG_ENTRY 32U
+#define SIZE_RESERVED_ERROR_LOGS 16368U
+#define SIZE_RESERVED_OTHER_LOGS 16368U
+
+// EEPROM Addresses
+#define ADDR_START 0x0000
+#define ADDR_STORAGE_TYPE    EEPROM_ADDR_STORAGE_TYPE
+#define ADDR_SERIAL_NUMBER   (ADDR_STORAGE_TYPE + SIZE_STORAGE_TYPE)
+#define ADDR_FLASH_TIMESTAMP (ADDR_SERIAL_NUMBER + SIZE_SERIAL_NUMBER)
+#define ADDR_PW_CYCLES       (ADDR_FLASH_TIMESTAMP + SIZE_FLASH_TIMESTAMP)
+#define ADDR_USAGE_CYCLES    (ADDR_PW_CYCLES + SIZE_PW_CYCLES)
+#define ADDR_SETTINGS        (ADDR_USAGE_CYCLES + SIZE_USAGE_CYCLES)
+#define ADDR_ERROR_LOGS      (ADDR_SETTINGS + SIZE_SETTINGS + SIZE_PROPERTIES_PADDING)
+#define ADDR_OTHER_LOGS      (ADDR_ERROR_LOGS + SIZE_RESERVED_ERROR_LOGS)
+
+#define ADDR_LOG_NEXT(x)    (x)
+#define ADDR_LOGS_START(x)  (x + SIZE_LOG_NEXT)
+
+///////////////// LOGS //////////////////////
+#define SIZE_LOG_DATA (SIZE_LOG_ENTRY - 4 - 1)
+
+#if SIZE_LOG_DATA < 0
+    "SIZE_LOG_ENTRY is too small"
+#endif
+
+#define GET_LOG_NEXT(data)          __EEPROM_TO_U16(data)
+#define SET_LOG_NEXT(dest, value)   __EEPROM_SET_U16(dest, value)
+
+#define GET_LOG_TIMESTAMP(data) __EEPROM_TO_U32(data)
+#define GET_LOG_FLAG(data)      ((data)[4])
+#define GET_LOG_DATA_PTR(data)  (data + 5)
+
+#define SET_LOG_TIMESTAMP(dest, value) __EEPROM_SET_U32(dest, value)
+#define SET_LOG_FLAG(dest, value)      ((dest)[4] = (uint8_t)(value))

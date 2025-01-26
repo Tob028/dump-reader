@@ -83,7 +83,7 @@ def output_data(filename, properties, logs):
         with open(f'./{filename}', 'w') as f:
             for key, value in properties.items():
                 f.write(f"{key}: {value}\n")
-            f.write("─" * 20 + "\n")
+            f.write("─" * 60 + "\n")
             for log in logs:
                 f.write(format_log(log) + "\n")
         print(f"Data written to {filename}")
